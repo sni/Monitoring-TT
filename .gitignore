@@ -1,0 +1,10 @@
+.author
+META.yml
+MYMETA.json
+MYMETA.yml
+Makefile
+inc/
+MANIFEST.bak
+blib/
+pm_to_blib
+customer

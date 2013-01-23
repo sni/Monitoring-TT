@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+use Monitoring::TT;
+
+my $g = Monitoring::TT->new();
+exit $g->run();
+
+##############################################
+
+=head1 NAME
+
+montt - build monitoring configuration based on template toolkit templates
+
+=head1 SYNOPSIS
+
+  Usage: montt [options] <input> <output>
+
+  Options:
+  -h, --help                    Show this help message and exit
+  -v, --verbose                 Print verbose output
+  -V, --version                 Print version
+  -f, --force                   Force overwrite existing directories
+  -cf, --contactfilter          Apply filter to contact inputs
+  -hf, --hostfilter             Apply filter to host inputs
+  -tf, --templatefilter         Apply filter to template files
+
+=head1 DESCRIPTION
+
+This script generates a monitoring configuration based on template toolkit templates
+
+=head1 OPTIONS
+
+montt has the following arguments:
+
+=over 4
+
+=item B<-h> , B<--help>
+
+    print help and exit
+
+=item B<-v> , B<--verbose>
+
+    print verbose output too
+
+=item B<-V> , B<--version>
+
+    print version and exit
+
+=back
+
+=head1 RETURN VALUE
+
+returns 0 on successful export or number of errors otherwise
+
+=head1 EXAMPLES
+
+build with defaults
+
+  %> montt
+
+=head1 AUTHOR
+
+2013, Sven Nierlein, <sven.nierlein@consol.de>
+
+=cut
