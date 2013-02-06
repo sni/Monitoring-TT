@@ -32,6 +32,7 @@ sub new {
     my($class, %options) = @_;
     my $self = {
         'types' => [ 'hosts', 'contacts' ],
+        'montt' => $options{'montt'},
     };
     bless $self, $class;
     return $self;
@@ -81,8 +82,11 @@ sub read {
     my $in_obj  = 0;
     for my $file (@files) {
         info("reading $type from $file");
-        open(my $fh, '<', $file) or die('cannot read '.$file.': '.$!);
-        while(my $line = <$fh>) {
+
+        my $output   = "";
+        $self->{'montt'}->{'tt'}->process($file, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
+
+        for my $line (split(/\n/mx, $output)) {
             next if substr($line, 0, 1) eq '#';
             chomp($line);
             if($line =~ m/^\s*define\s+(\w+)($|\s|{)/mx) {
@@ -118,7 +122,6 @@ sub read {
                 }
             }
         }
-        close($fh);
         debug("read ".(scalar @{$data})." $type from $file");
     }
     return $data;

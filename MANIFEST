@@ -42,6 +42,7 @@ t/099-Perl-Critic.t
 t/100-utils.t
 t/110-input_csv.t
 t/111-input_nagios.t
+t/112-input_nagios-tt.t
 t/200-basic.t
 t/201-basic-tags.t
 t/202-contactgroups.t
@@ -53,6 +54,7 @@ t/data/110-input_csv/hosts-win.csv
 t/data/110-input_csv/hosts.csv
 t/data/111-input_nagios/hosts-win.cfg
 t/data/111-input_nagios/hosts.cfg
+t/data/112-input_nagios-tt/hosts.cfg
 t/data/200-basic/in/conf.d/contacts.cfg
 t/data/200-basic/in/conf.d/hosts/linux.cfg
 t/data/200-basic/in/contacts.csv

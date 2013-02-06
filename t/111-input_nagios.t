@@ -10,7 +10,8 @@ use_ok('Monitoring::TT::Input::Nagios');
 # set it twice to avoid 'used only once:' warning
 $Monitoring::TT::Log::Verbose = 0;
 $Monitoring::TT::Log::Verbose = 0;
-my $nag       = Monitoring::TT::Input::Nagios->new();
+my $montt     = Monitoring::TT->new();
+my $nag       = Monitoring::TT::Input::Nagios->new(montt => $montt);
 my $types     = $nag->get_types(['t/data/111-input_nagios']);
 my $types_exp = ['hosts'];
 is_deeply($types, $types_exp, 'nagios input types') or diag(Dumper($types));

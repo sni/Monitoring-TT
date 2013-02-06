@@ -53,6 +53,10 @@ sub new {
     for my $s (@{Monitoring::TT::Identifier::functions('Monitoring::TT::Render')}) {
         $self->{'tt_opts'}->{'PRE_DEFINE'}->{$s} = \&{'Monitoring::TT::Render::'.$s};
     }
+
+    $self->{'tt'} = Template->new($self->{'tt_opts'});
+    $Template::Stash::PRIVATE = undef;
+
     return $self;
 }
 
@@ -382,9 +386,7 @@ sub _process_template {
     trace('==========================');
 
     my $output;
-    my $tt = Template->new($self->{'tt_opts'});
-    $Template::Stash::PRIVATE = undef;
-    $tt->process(\$template, $data, \$output) or $self->_template_process_die($tt, $template, $data);
+    $self->{'tt'}->process(\$template, $data, \$output) or $self->_template_process_die($template, $data);
 
     # clean up result
     $output =~ s/^\s*$//sgmx;
@@ -437,7 +439,7 @@ sub _get_input_types {
         ## use critic
         error($@) if $@;
         my $obj      = \&{$objclass."::new"};
-        my $it       = &$obj($objclass);
+        my $it       = &$obj($objclass, montt => $self);
         my $types    = $it->get_types($folders);
         trace('input \''.$t.'\' supports: '.join(', ', @{$types}));
         for my $type (@{$types}) {
@@ -503,8 +505,8 @@ sub _get_tags_for_path {
 
 #####################################################################
 sub _template_process_die {
-    my($self, $tt, $template, $data) = @_;
-    my $tterror = "".$tt->error();
+    my($self, $template, $data) = @_;
+    my $tterror = "".$self->{'tt'}->error();
     my $already_printed = 0;
 
     # try to find file / line

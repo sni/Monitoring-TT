@@ -34,7 +34,8 @@ sub new {
         'fields' => {
             'hosts'    => [qw/name alias address type tags groups apps/],
             'contacts' => [qw/name alias email roles tags groups/],
-        }
+        },
+        'montt' => $options{'montt'},
     };
     bless $self, $class;
     return $self;
