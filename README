@@ -23,8 +23,6 @@ use Template Toolkit Syntax.
 
 For example:
 
-------------
-
   input/
   |-- cgi.cfg
   |-- conf.d
@@ -46,8 +44,6 @@ For example:
           |-- commands.cfg
           `-- timeperiods.cfg
 
-------------
-
 All files are nagios config files, but you may use template toolkit
 syntax to add some magic to those files. Any folder below conf.d
 expect 'apps', 'contacts' and 'hosts' will be processed only once. The
@@ -55,9 +51,9 @@ expect 'apps', 'contacts' and 'hosts' will be processed only once. The
 'contact' folder for every contact.
 
 then run the montt processor:
-------------
+
   % > ./montt input/ output/
-------------
+
 
 The processor won't overwrite existing files, so export the new config
 into a new empty folder and move files afterwards. You can automate
