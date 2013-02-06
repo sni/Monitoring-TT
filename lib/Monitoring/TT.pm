@@ -383,6 +383,7 @@ sub _process_template {
 
     my $output;
     my $tt = Template->new($self->{'tt_opts'});
+    $Template::Stash::PRIVATE = undef;
     $tt->process(\$template, $data, \$output) or $self->_template_process_die($tt, $template, $data);
 
     # clean up result
