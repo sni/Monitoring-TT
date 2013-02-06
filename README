@@ -52,7 +52,7 @@ expect 'apps', 'contacts' and 'hosts' will be processed only once. The
 
 then run the montt processor:
 
-  % > ./montt input/ output/
+  %> ./montt input/ output/
 
 
 The processor won't overwrite existing files, so export the new config
