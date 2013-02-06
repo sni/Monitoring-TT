@@ -29,6 +29,7 @@ META.yml
 MYMETA.json
 MYMETA.yml
 README
+README.asciidoc
 t/091-clean_debug.t
 t/092-todo.t
 t/093-manifest.t
