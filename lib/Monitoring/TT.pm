@@ -549,7 +549,7 @@ sub _template_process_die {
 sub _get_file_and_line_for_error {
     my($self, $lines, $linenr) = @_;
     for(my $x = $linenr; $x >= 0; $x--) {
-        if($lines->[$x] =~ m/SRC\s+(.*):(\d+)/mx) {
+        if(defined $lines->[$x] and $lines->[$x] =~ m/SRC\s+(.*):(\d+)/mx) {
             my $diff   = $x - $2 + 1;
             return($1, ($linenr - $diff))
         }
