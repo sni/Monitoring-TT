@@ -102,7 +102,7 @@ sub _has_something {
                 return 1 if lc($a) eq lc($val);
             }
         } else {
-            return 1 if lc($self->{$type}->{$tag}) eq lc($val);
+            return 1 if defined $self->{$type}->{$tag} and lc($self->{$type}->{$tag}) eq lc($val);
         }
     } else {
         return 1 if exists $self->{$type}->{$tag};

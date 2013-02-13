@@ -91,7 +91,7 @@ sub run {
             exit 1;
         }
     }
-    mkdir($self->{'out'});
+    $self->_mkdir_r($self->{'out'});
 
     info('using template filter: '.$self->{'opt'}->{'templatefilter'}) if $self->{'opt'}->{'templatefilter'};
     info('using contact filter: '.$self->{'opt'}->{'contactfilter'})   if $self->{'opt'}->{'contactfilter'};
@@ -555,6 +555,17 @@ sub _get_file_and_line_for_error {
         }
     }
     return(undef, undef);
+}
+#####################################################################
+sub _mkdir_r {
+    my($self, $dir) = @_;
+    my $path = '';
+    for my $part (split/(\/)/mx, $dir) {
+        $path .= $part;
+        next if $path eq '';
+        mkdir($path) unless -d $path;
+    }
+    return;
 }
 
 #####################################################################
