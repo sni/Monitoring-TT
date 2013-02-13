@@ -9,7 +9,7 @@ $Monitoring::TT::Log::Verbose = 1;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(error warn info debug trace);
+our @EXPORT_OK = qw(error warn info debug trace log);
 
 BEGIN {
     # check if we have ansi color support
@@ -93,6 +93,32 @@ write a trace message to stdout
 =cut
 sub trace {
     _out($_[0],'trace') if $Monitoring::TT::Log::Verbose >= 3;
+    return;
+}
+
+#####################################################################
+
+=head2 log
+
+log something, if line starts with ERROR: its an error, info otherwise
+
+=cut
+sub log {
+    my($msg) = @_;
+    if(ref $msg) {
+        info($msg);
+        return;
+    }
+    if($msg =~ m/^ERROR:/mx) {
+        $msg =~ s/^ERROR:\*s//gmx;
+        error($msg);
+    }
+    elsif($msg =~ m/^WARNING:/mx) {
+        $msg =~ s/^WARNING:\s*//gmx;
+        warning($msg);
+    } else {
+        info($msg);
+    }
     return;
 }
 

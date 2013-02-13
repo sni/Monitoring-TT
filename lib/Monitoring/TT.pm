@@ -7,7 +7,7 @@ use Pod::Usage;
 use Getopt::Long;
 use Template;
 use Monitoring::TT::Identifier;
-use Monitoring::TT::Log qw/error warn info debug trace/;
+use Monitoring::TT::Log qw/error warn info debug trace log/;
 use Monitoring::TT::Object;
 use Monitoring::TT::Render;
 use Monitoring::TT::Utils;
@@ -460,7 +460,13 @@ sub _run_hook {
             my $cmd = $hook;
             $cmd = $cmd." ".$args if defined $args;
             debug($cmd);
-            `$cmd`;
+            my $out = `$cmd`;
+            my $rc  = $?>>8;
+            log($out);
+            if($rc) {
+                debug('hook returned: '.$rc.' -> exiting');
+                exit $rc;
+            }
         }
     }
     return;
