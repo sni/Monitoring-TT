@@ -110,7 +110,7 @@ sub log {
         return;
     }
     if($msg =~ m/^ERROR:/mx) {
-        $msg =~ s/^ERROR:\*s//gmx;
+        $msg =~ s/^ERROR:\s*//gmx;
         error($msg);
     }
     elsif($msg =~ m/^WARNING:/mx) {
