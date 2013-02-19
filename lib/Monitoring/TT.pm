@@ -466,9 +466,12 @@ sub _run_hook {
             my $cmd = $hook;
             $cmd = $cmd." ".$args if defined $args;
             debug($cmd);
-            my $out = `$cmd`;
+            open(my $ph, '-|', $cmd);
+            while(my $line = <$ph>) {
+                log($line);
+            }
+            close($ph);
             my $rc  = $?>>8;
-            log($out);
             if($rc) {
                 debug('hook returned: '.$rc.' -> exiting');
                 exit $rc;

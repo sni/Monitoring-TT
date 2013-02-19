@@ -117,7 +117,7 @@ sub log {
         $msg =~ s/^WARNING:\s*//gmx;
         warning($msg);
     } else {
-        info($msg);
+        _out($msg, 'plain');
     }
     return "";
 }
@@ -131,6 +131,10 @@ sub _out {
         return _out(Dumper($data), $lvl, $time);
     }
     for my $line (split/\n/mx, $data) {
+        if($lvl eq 'plain') {
+            print $line, "\n";
+            next;
+        }
         my $txt = "[".$time."][".uc($lvl)."] ".$line."\n";
         if($lvl eq 'error' or $lvl eq 'warning') {
             print STDERR $txt;

@@ -92,7 +92,8 @@ sub read {
             if($line =~ m/^\s*define\s+(\w+)($|\s|{)/mx) {
                 my $in_type = $1;
                 if($in_type.'s' ne $type) {
-                    die("unexpected input type '".$in_type."' in ".$file.':'.$.);
+                    warn("unexpected input type '".$in_type."' in ".$file.':'.$.);
+                    next;
                 }
                 $in_obj = 1;
             } elsif($in_obj) {
