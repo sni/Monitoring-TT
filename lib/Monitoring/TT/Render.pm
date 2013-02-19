@@ -84,6 +84,7 @@ sub uniq {
 
 =cut
 sub join_list {
+    return join_hash_list(@_) if defined $_[0] and ref $_[0] eq 'HASH';
     my $uniq = {};
     for my $list (@_) {
         for my $i (@{$list}) {
@@ -94,6 +95,46 @@ sub join_list {
     return \@items;
 }
 
+#####################################################################
+
+=head2 join_hash_list
+
+    join_hash_list($hashlist, $exceptions)
+
+    returns list csv list for hash but leave out exceptions
+
+=cut
+sub join_hash_list {
+    my($hash, $exceptions) = @_;
+    return "" unless defined $hash;
+    my $list  = [];
+    for my $key (sort keys %{$hash}) {
+        my $skip = 0;
+        for my $ex (@{_list($exceptions)}) {
+            if($key =~ m/$ex/mx) {
+                $skip = 1;
+                last;
+            }
+        }
+        next if $skip;
+        for my $val (@{_list($hash->{$key})}) {
+            if($val) {
+                push @{$list}, $key.'='.$val;
+            } else {
+                push @{$list}, $key;
+            }
+        }
+    }
+    return join(', ', @{$list});
+}
+
+#####################################################################
+sub _list {
+    my($data) = @_;
+    return([]) unless defined $data;
+    return($data) if ref $data eq 'ARRAY';
+    return([$data]);
+}
 #####################################################################
 
 =head1 AUTHOR

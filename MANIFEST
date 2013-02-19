@@ -40,6 +40,7 @@ t/097-Pod.t
 t/098-Pod-Coverage.t
 t/099-Perl-Critic.t
 t/100-utils.t
+t/101-render_utils.t
 t/110-input_csv.t
 t/111-input_nagios.t
 t/112-input_nagios-tt.t
