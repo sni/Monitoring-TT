@@ -216,6 +216,7 @@ sub _build_dynamic_object_config {
                     my $o = Monitoring::TT::Object->new($type, $d);
                     die('got no object') unless defined $o;
                     next if defined $typefilter and join(',', values %{$o}) !~ m/$typefilter/mx;
+                    trace($o) if $Monitoring::TT::Log::Verbose >= 5;
                     push @{$obj_list}, $o;
                 }
             }

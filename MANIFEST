@@ -47,6 +47,8 @@ t/200-basic.t
 t/201-basic-tags.t
 t/202-contactgroups.t
 t/203-apps.t
+t/204-extra-apps.t
+t/205-extra-tags.t
 t/250-error-1.t
 t/251-error-2.t
 t/299-full.t
@@ -73,6 +75,17 @@ t/data/203-apps/in/conf.d/apps/db.cfg
 t/data/203-apps/in/conf.d/hosts.cfg
 t/data/203-apps/in/hosts.csv
 t/data/203-apps/out/conf.d/hosts.cfg
+t/data/204-extra-apps/in/conf.d/apps.cfg
+t/data/204-extra-apps/in/conf.d/apps/testapp.cfg
+t/data/204-extra-apps/in/conf.d/hosts/linux.cfg
+t/data/204-extra-apps/in/hosts.csv
+t/data/204-extra-apps/out/conf.d/hosts.cfg
+t/data/205-extra-tags/in/conf.d/apps.cfg
+t/data/205-extra-tags/in/conf.d/apps/testapp.cfg
+t/data/205-extra-tags/in/conf.d/hosts.cfg
+t/data/205-extra-tags/in/conf.d/hosts/linux.cfg
+t/data/205-extra-tags/in/hosts.csv
+t/data/205-extra-tags/out/conf.d/hosts.cfg
 t/data/250-error-1/in/conf.d/hosts.cfg
 t/data/250-error-1/in/hosts.csv
 t/data/250-error-1/out/conf.d/hosts.cfg

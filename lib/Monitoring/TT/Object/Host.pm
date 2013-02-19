@@ -41,7 +41,7 @@ returns true if object has specific app, false otherwise.
 =cut
 sub has_app {
     my( $self, $app, $val ) = @_;
-    return $self->_has_something('apps', $app, $val);
+    return $self->_has_something('extra_apps', $app, $val) || $self->_has_something('apps', $app, $val);
 }
 
 #####################################################################
@@ -59,6 +59,19 @@ sub apps {
 
 #####################################################################
 
+=head2 extra_apps
+
+returns list of extra apps or empty list otherwise
+
+=cut
+sub extra_apps {
+    my( $self ) = @_;
+    return $self->{'extra_apps'} if exists $self->{'extra_apps'};
+    return [];
+}
+
+#####################################################################
+
 =head2 set_app
 
 set additional app
@@ -66,7 +79,7 @@ set additional app
 =cut
 sub set_app {
     my( $self, $app, $val ) = @_;
-    return $self->_set_something('apps', $app, $val);
+    return $self->_set_something('extra_apps', $app, $val);
 }
 
 #####################################################################

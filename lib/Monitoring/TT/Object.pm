@@ -48,7 +48,7 @@ returns true if object has specific tag, false otherwise.
 =cut
 sub has_tag {
     my( $self, $tag, $val ) = @_;
-    return $self->_has_something('tags', $tag, $val);
+    return $self->_has_something('extra_tags', $tag, $val) || $self->_has_something('tags', $tag, $val);
 }
 
 #####################################################################
@@ -66,6 +66,19 @@ sub tags {
 
 #####################################################################
 
+=head2 extra_tags
+
+returns list of extra tags or empty list otherwise
+
+=cut
+sub extra_tags {
+    my( $self ) = @_;
+    return $self->{'extra_tags'} if exists $self->{'extra_tags'};
+    return [];
+}
+
+#####################################################################
+
 =head2 tag
 
 returns value of this tag or empty string if not set
@@ -74,8 +87,9 @@ returns value of this tag or empty string if not set
 sub tag {
     my( $self, $tag ) = @_;
     $tag = lc $tag;
-    return "" unless defined $self->{'tags'}->{$tag};
-    return $self->{'tags'}->{$tag};
+    return $self->{'extra_tags'}->{$tag} if $self->{'extra_tags'}->{$tag};
+    return $self->{'tags'}->{$tag}       if $self->{'tags'}->{$tag};
+    return "";
 }
 
 #####################################################################
@@ -87,7 +101,7 @@ set additional tag
 =cut
 sub set_tag {
     my( $self, $tag, $val ) = @_;
-    return $self->_set_something('tags', $tag, $val);
+    return $self->_set_something('extra_tags', $tag, $val);
 }
 
 #####################################################################
