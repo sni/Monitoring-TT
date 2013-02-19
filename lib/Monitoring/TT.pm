@@ -99,7 +99,7 @@ sub run {
 
     $self->_copy_static_files();
     $self->_build_dynamic_config();
-    $self->_print_stats();
+    $self->_print_stats() if $Monitoring::TT::Log::Verbose >= 2;
     $self->_run_hook('post', join(',', @{$self->{'in'}}));
     info('done');
     return 0;
@@ -116,6 +116,7 @@ sub _get_options {
         files   => [],
         verbose => 1,
         force   => 0,
+        dryrun  => 0,
     };
     GetOptions (
        'h|help'                 => \$self->{'opt'}->{'help'},
@@ -126,16 +127,21 @@ sub _get_options {
        'cf|contactfilter=s'     => \$self->{'opt'}->{'contactfilter'},
        'hf|hostfilter=s'        => \$self->{'opt'}->{'hostfilter'},
        'tf|templatefilter=s'    => \$self->{'opt'}->{'templatefilter'},
+       'n|dry-run'              => \$self->{'opt'}->{'dryrun'},
        '<>'                     => sub { push @{$self->{'opt'}->{'files'}}, $_[0] },
     ) or $self->_usage();
     if($self->{'opt'}->{'version'}) { print 'Version ', $VERSION,"\n"; exit 0; }
     pod2usage({ -verbose => 2, -exit => 3 } ) if $self->{'opt'}->{'help'};
     $self->_usage('please specify at least one input and output folder!') if scalar @{$self->{'opt'}->{'files'}} <= 1;
     for my $f (@{$self->{'opt'}->{'files'}}) { $f =~ s/\/*$//gmx; }
-    $self->{'out'} = pop @{$self->{'opt'}->{'files'}};
-    $self->{'in'}  = $self->{'opt'}->{'files'};
+    $self->{'out'}              = pop @{$self->{'opt'}->{'files'}};
+    $self->{'in'}               = $self->{'opt'}->{'files'};
     $self->{'opt'}->{'verbose'} = 0 if $self->{'opt'}->{'quiet'};
+    $self->{'opt'}->{'dryrun'}  = 1 if $self->{'opt'}->{'contactfilter'};
+    $self->{'opt'}->{'dryrun'}  = 1 if $self->{'opt'}->{'hostfilter'};
+    $self->{'opt'}->{'dryrun'}  = 1 if $self->{'opt'}->{'templatefilter'};
     $Monitoring::TT::Log::Verbose = $self->{'opt'}->{'verbose'};
+    info('Dry Run, Hooks won\'t be executed') if $self->{'opt'}->{'dryrun'};
     return 1;
 }
 
@@ -255,7 +261,6 @@ sub _build_dynamic_object_config {
 #####################################################################
 sub _print_stats {
     my($self) = @_;
-    return if $self->{'opt'}->{'quiet'};
     my $out  = $self->{'out'};
     info('written:');
     for my $type (qw/host hostgroup hostdependency hostextinfo hostescalation
@@ -453,6 +458,7 @@ sub _get_input_types {
 #####################################################################
 sub _run_hook {
     my($self, $name, $args) = @_;
+    return if $self->{'opt'}->{'dryrun'};
     for my $in (@{$self->{'in'}}) {
         my $hook = $in.'/hooks/'.$name;
         trace("hook: looking for ".$hook);

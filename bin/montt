@@ -22,10 +22,11 @@ montt - build monitoring configuration based on template toolkit templates
   -v, --verbose                 Print verbose output
   -q, --quiet                   Print less verbose output
   -V, --version                 Print version
+  -n,  --dry-run                Dry run only, no hooks will be executed
   -f, --force                   Force overwrite existing directories
-  -cf, --contactfilter          Apply filter to contact inputs
-  -hf, --hostfilter             Apply filter to host inputs
-  -tf, --templatefilter         Apply filter to template files
+  -cf, --contactfilter=filter   Apply filter to contact inputs
+  -hf, --hostfilter=filter      Apply filter to host inputs
+  -tf, --templatefilter=filter  Apply filter to template files
 
 =head1 DESCRIPTION
 
@@ -52,6 +53,22 @@ montt has the following arguments:
 =item B<-V> , B<--version>
 
     print version and exit
+
+=item B<-n> , B<--dry-run>
+
+    Dry run only, no hooks will be executed
+
+=item B<-cf> , B<--contactfilter=filter>
+
+    Apply filter to contact inputs. Implies dry-run (-n).
+
+=item B<-hf> , B<--hostfilter=filter>
+
+    Apply filter to host inputs. Implies dry-run (-n).
+
+=item B<-tf> , B<--templatefilter=filter>
+
+    Apply filter to template files. Implies dry-run (-n).
 
 =back
 
