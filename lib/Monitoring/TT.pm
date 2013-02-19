@@ -474,6 +474,7 @@ sub _run_hook {
 #####################################################################
 sub _read_replaced_template {
     my($self, $template) = @_;
+    $template =~ s|//|/|gmx;
     my $text = '[%# SRC '.$template.':1 #%]';
     open(my $fh, '<', $template) or die("cannot read: ".$template.': '.$!);
     while(my $line = <$fh>) {

@@ -104,7 +104,7 @@ sub test_montt {
     ok(($tempdir and -d $tempdir), "created tempdir: ".$tempdir);
 
     $options = {} unless defined $options;
-    $options->{'cmd'} = $BIN.' '.$dir.'/in '.$tempdir   unless defined $options->{'cmd'};
+    $options->{'cmd'} = $BIN.' -v '.$dir.'/in '.$tempdir   unless defined $options->{'cmd'};
     $options->{'like'} = [ '/\[INFO\]\ done/' ]         unless defined $options->{'like'};
     $options->{'unlike'} = [ '/ARRAY/', '/HASH/' ]      unless defined $options->{'unlike'};
 
