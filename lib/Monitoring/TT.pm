@@ -233,12 +233,9 @@ sub _build_dynamic_object_config {
     for my $in (@{$self->{'in'}}) {
         for my $file (reverse sort @{$self->_get_files($in.'/conf.d', '\.cfg')}) {
             next if defined $self->{'opt'}->{'templatefilter'} and $file !~ m/$self->{'opt'}->{'templatefilter'}/mx;
-            next if $file eq $in.'/conf.d/apps.cfg';
-            next if $file eq $in.'/conf.d/contacts.cfg';
-            next if $file eq $in.'/conf.d/hosts.cfg';
-            next if $file =~ m/$in\/conf\.d\/apps\//mx;
-            next if $file =~ m/$in\/conf\.d\/contacts\//mx;
-            next if $file =~ m/$in\/conf\.d\/hosts\//mx;
+            next if $file =~ m/^$in\/conf\.d\/apps/mx;
+            next if $file =~ m/^$in\/conf\.d\/contacts/mx;
+            next if $file =~ m/^$in\/conf\.d\/hosts/mx;
             info('processing object file: '.$file);
             my $outfile = $file;
             $outfile    =~ s/.*\///mx;
@@ -291,7 +288,9 @@ sub _build_template {
     my $template  = "[% FOREACH d = data %][% ".$shorttype." = d %]\n";
     my $found = 0;
     for my $in (@{$self->{'in'}}) {
-        for my $path ($in.'/'.$dir.'/'.$type, $in.'/'.$dir.'/'.$type.'.cfg') {
+        for my $path (glob($in.'/'.$dir.'/'.$type.'/ '.
+                           $in.'/'.$dir.'/'.$type.'*.cfg')
+        ) {
             trace('looking for '.$type.' templates in '.$path);
             if(-e $path) {
                 my $templates = $self->_get_files($path, '\.cfg');
