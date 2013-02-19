@@ -66,6 +66,15 @@ Hooks are scripts which are run at certain points of the export
 procedure. Hooks have to be executable and have to be placed in a hook
 folder below the input directory.
 
+All hooks will be run with a comma seperated list of input folders as argument.
+
+ex.:
+
+..................
+ inputfolder1/hooks/pre inputfolder1,inputfolder2
+..................
+
+
 ==== pre
 
 The 'pre' hook is run before the export.

@@ -81,7 +81,7 @@ sub run {
             exit 1;
         }
     }
-    $self->_run_hook('pre');
+    $self->_run_hook('pre', join(',', @{$self->{'in'}}));
 
     # die if output directory already exists
     if(-e $self->{'out'} and !$self->{'opt'}->{'force'}) {
@@ -100,7 +100,7 @@ sub run {
     $self->_copy_static_files();
     $self->_build_dynamic_config();
     $self->_print_stats();
-    $self->_run_hook('post');
+    $self->_run_hook('post', join(',', @{$self->{'in'}}));
     info('done');
     return 0;
 }
