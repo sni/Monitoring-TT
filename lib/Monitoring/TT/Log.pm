@@ -43,7 +43,7 @@ sub error {
     print STDERR color('red')   if $Monitoring::TT::Log::Verbose >= 0;
     _out($_[0],'error')         if $Monitoring::TT::Log::Verbose >= 0;
     print STDERR color('reset') if $Monitoring::TT::Log::Verbose >= 0;
-    return;
+    return "";
 }
 
 #####################################################################
@@ -57,7 +57,7 @@ sub warn {
     print STDERR color('yellow') if $Monitoring::TT::Log::Verbose >= 1;
     _out($_[0],'warning')        if $Monitoring::TT::Log::Verbose >= 1;
     print STDERR color('reset')  if $Monitoring::TT::Log::Verbose >= 1;
-    return;
+    return "";
 }
 
 #####################################################################
@@ -68,8 +68,8 @@ write a info message to stdout
 
 =cut
 sub info {
-    _out($_[0],'info') if $Monitoring::TT::Log::Verbose >= 1;
-    return;
+    _out($_[0],'info') if $Monitoring::TT::Log::Verbose >= 2;
+    return "";
 }
 
 #####################################################################
@@ -80,8 +80,8 @@ write a debug message to stdout
 
 =cut
 sub debug {
-    _out($_[0],'debug') if $Monitoring::TT::Log::Verbose >= 2;
-    return;
+    _out($_[0],'debug') if $Monitoring::TT::Log::Verbose >= 3;
+    return "";
 }
 
 #####################################################################
@@ -92,8 +92,8 @@ write a trace message to stdout
 
 =cut
 sub trace {
-    _out($_[0],'trace') if $Monitoring::TT::Log::Verbose >= 3;
-    return;
+    _out($_[0],'trace') if $Monitoring::TT::Log::Verbose >= 4;
+    return "";
 }
 
 #####################################################################
@@ -119,7 +119,7 @@ sub log {
     } else {
         info($msg);
     }
-    return;
+    return "";
 }
 
 #####################################################################

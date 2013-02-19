@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use Carp;
+use Monitoring::TT::Log qw/error warn info debug trace log/;
 
 #####################################################################
 
