@@ -87,6 +87,7 @@ sub read {
         while(my $line = <$fh>) {
             next if substr($line, 0, 1) eq '#';
             chomp($line);
+            next if $line =~ m/^\s*$/gmx;
             my @d = split(/;/mx, $line);
             my $d = {};
             my $x = 0;
