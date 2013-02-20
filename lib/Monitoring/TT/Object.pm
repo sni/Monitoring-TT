@@ -48,7 +48,7 @@ returns true if object has specific tag, false otherwise.
 =cut
 sub has_tag {
     my( $self, $tag, $val ) = @_;
-    return $self->_has_something('extra_tags', $tag, $val) || $self->_has_something('tags', $tag, $val);
+    return $self->_has_something('conf', $tag, $val) || $self->_has_something('extra_tags', $tag, $val) || $self->_has_something('tags', $tag, $val);
 }
 
 #####################################################################
@@ -89,6 +89,7 @@ sub tag {
     $tag = lc $tag;
     return $self->{'extra_tags'}->{$tag} if $self->{'extra_tags'}->{$tag};
     return $self->{'tags'}->{$tag}       if $self->{'tags'}->{$tag};
+    return $self->{'conf'}->{$tag}       if $self->{'conf'}->{$tag};
     return "";
 }
 

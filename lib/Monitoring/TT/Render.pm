@@ -54,19 +54,24 @@ sub die {
 
 =cut
 sub uniq {
-    my( $objects, $attr , $name ) = @_;
+    my( $objects, $attrlist , $name ) = @_;
     croak('expected list of objects') unless ref $objects eq 'ARRAY';
     my $uniq = {};
     for my $o (@{$objects}) {
-        if($name) {
-            next unless defined $o->{$attr};
-            next unless defined $o->{$attr}->{$name};
-            for my $v (split('\|', $o->{$attr}->{$name})) {
-                $uniq->{$v} = 1;
-            }
-        } else {
-            for my $a (@{$o->{$attr}}) {
-                $uniq->{$a} = 1;
+        for my $attr (@{_list($attrlist)}) {
+            if($name) {
+                next unless defined $o->{$attr};
+                next unless defined $o->{$attr}->{$name};
+                for my $v (split(/\||,/, $o->{$attr}->{$name})) {
+                    $uniq->{$v} = 1;
+                }
+            } else {
+                next unless defined $o->{$attr};
+                my $tmp = $o->{$attr};
+                if(ref $tmp ne 'ARRAY') { my @tmp = split(/\s*,\s*/mx,$tmp); $tmp = \@tmp; }
+                for my $a (@{$tmp}) {
+                    $uniq->{$a} = 1;
+                }
             }
         }
     }
