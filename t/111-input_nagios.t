@@ -18,6 +18,9 @@ is_deeply($types, $types_exp, 'nagios input types') or diag(Dumper($types));
 
 my $hosts     = $nag->read('t/data/111-input_nagios', 'hosts');
 my $hosts_exp =  [{
+            'name'                  => 'test-win',
+            'address'               => '127.0.0.2',
+            'alias'                 => '',
             'groups'                => [],
             'type'                  => 'windows',
             'apps'                  => {},
@@ -31,6 +34,9 @@ my $hosts_exp =  [{
                 },
           },
           {
+            'name'     => 'test-host',
+            'address'  => '127.0.0.1',
+            'alias'    => '',
             'apps' => {
                         'database'  => '',
                         'webserver' => ''

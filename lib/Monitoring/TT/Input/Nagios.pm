@@ -112,6 +112,10 @@ sub read {
                     # transfer type
                     $current->{'type'} = delete $current->{'conf'}->{'_type'};
 
+                    $current->{'name'}    = $current->{'conf'}->{'host_name'} || '';
+                    $current->{'address'} = $current->{'conf'}->{'address'}   || '';
+                    $current->{'alias'}   = $current->{'conf'}->{'alias'}     || '';
+
                     push @{$data}, $current;
                     $current = { 'conf' => {}};
                 } else {

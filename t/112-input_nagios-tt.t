@@ -14,6 +14,9 @@ my $montt     = Monitoring::TT->new();
 my $nag       = Monitoring::TT::Input::Nagios->new('montt' => $montt);
 my $hosts     = $nag->read('t/data/112-input_nagios-tt', 'hosts');
 my $hosts_exp =  [{
+            'name'     => 'test-host-1',
+            'address'  => '127.0.0.1',
+            'alias'    => '',
             'apps'   => {},
             'tags'   => {},
             'groups' => [],
@@ -24,6 +27,9 @@ my $hosts_exp =  [{
                     'address' => '127.0.0.1',
                 }
         }, {
+            'name'   => 'test-host-2',
+            'address'  => '127.0.0.2',
+            'alias'    => '',
             'apps'   => {},
             'tags'   => {},
             'groups' => [],
@@ -34,6 +40,9 @@ my $hosts_exp =  [{
                     'address' => '127.0.0.2',
                 }
         }, {
+            'name'   => 'test-host-3',
+            'address'  => '127.0.0.3',
+            'alias'    => '',
             'apps'   => {},
             'tags'   => {},
             'groups' => [],
