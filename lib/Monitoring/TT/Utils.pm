@@ -66,7 +66,7 @@ sub parse_tags {
     my $tags = {};
     return $tags unless defined $str;
     for my $s (split(/\s*,\s*/mx, $str)) {
-        my($key,$val) = split(/=/mx,$s,2);
+        my($key,$val) = split(/\s*=\s*/mx,$s,2);
         $key = lc $key;
         $val = '' unless defined $val;
         if(defined $tags->{$key}) {

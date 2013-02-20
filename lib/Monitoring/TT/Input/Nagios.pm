@@ -121,7 +121,7 @@ sub read {
                 } else {
                     $line =~ s/^\s*//gmx;
                     $line =~ s/\s*$//gmx;
-                    my($key,$val) = split/\s+/mx, $line;
+                    my($key,$val) = split/\s+/mx, $line, 2;
                     $key = lc $key;
                     $current->{'conf'}->{$key} = $val;
                 }
