@@ -179,6 +179,8 @@ sub _build_dynamic_config {
             info('processing non object: '.$file);
             my $outfile = $file;
             $outfile    =~ s/.*\///mx;
+            next if $outfile =~ m/^hosts.*\.cfg/gmx;
+            next if $outfile =~ m/^contacts.*\.cfg/gmx;
             $outfile    = $self->{'out'}.'/'.$outfile;
             debug('writing: '.$outfile);
             open(my $fh, '>', $outfile) or die('cannot write '.$outfile.': '.$!);
