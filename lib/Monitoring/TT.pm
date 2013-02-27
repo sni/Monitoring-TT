@@ -54,9 +54,6 @@ sub new {
         $self->{'tt_opts'}->{'PRE_DEFINE'}->{$s} = \&{'Monitoring::TT::Render::'.$s};
     }
 
-    $self->{'tt'} = Template->new($self->{'tt_opts'});
-    $Template::Stash::PRIVATE = undef;
-
     return $self;
 }
 
@@ -82,6 +79,12 @@ sub run {
         }
     }
     $self->_run_hook('pre', join(',', @{$self->{'in'}}));
+
+    # make some globals available in TT stash
+    $self->{'tt_opts'}->{'PRE_DEFINE'}->{'src'} = $self->{'in'};
+
+    $self->{'tt'} = Template->new($self->{'tt_opts'});
+    $Template::Stash::PRIVATE = undef;
 
     # die if output directory already exists
     if(-e $self->{'out'} and !$self->{'opt'}->{'force'}) {
@@ -212,7 +215,7 @@ sub _build_dynamic_object_config {
 
     mkdir($self->{'out'}.'/conf.d');
 
-    my $data = {};
+    my $data = { hosts => [], contacts => []};
     for my $type (keys %{$input_types}) {
         my $typefilter = $self->{'opt'}->{substr($type,0,-1).'filter'};
         my $obj_list = [];
