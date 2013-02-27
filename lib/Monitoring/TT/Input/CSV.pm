@@ -88,7 +88,7 @@ sub read {
             next if substr($line, 0, 1) eq '#';
             chomp($line);
             next if $line =~ m/^\s*$/gmx;
-            my @d = split(/;/mx, $line);
+            my @d = split(/\s*;\s*/mx, $line);
             my $d = {};
             my $x = 0;
             for my $k (@{$self->{'fields'}->{$type}}) {

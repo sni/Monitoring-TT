@@ -115,7 +115,7 @@ sub read {
                     $current->{'name'}    = $current->{'conf'}->{'host_name'}   || '';
                     $current->{'address'} = $current->{'conf'}->{'address'}     || '';
                     $current->{'alias'}   = $current->{'conf'}->{'alias'}       || '';
-                    $current->{'groups'}  = $current->{'conf'}->{'host_groups'} || [];
+                    $current->{'groups'}  = $current->{'conf'}->{'host_groups'} || $current->{'conf'}->{'hostgroups'} || [];
 
                     push @{$data}, $current;
                     $current = { 'conf' => {}};
