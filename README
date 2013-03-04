@@ -60,6 +60,10 @@ into a new empty folder and move files afterwards. You can automate
 this step with hooks.
 
 
+=== Examples
+
+For now the only examples are the tests folder below t/data.
+
 === Hooks
 
 Hooks are scripts which are run at certain points of the export
