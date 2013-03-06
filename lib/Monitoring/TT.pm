@@ -177,7 +177,7 @@ sub _build_dynamic_config {
 
     # other files
     for my $in (@{$self->{'in'}}) {
-        for my $file (glob($in.'/*.cfg')) {
+        for my $file (sort glob($in.'/*.cfg')) {
             next if defined $self->{'opt'}->{'templatefilter'} and $file !~ m/$self->{'opt'}->{'templatefilter'}/mx;
             info('processing non object: '.$file);
             my $outfile = $file;
@@ -232,6 +232,8 @@ sub _build_dynamic_object_config {
                 }
             }
         }
+        # sort objects by name
+        @{$obj_list} = sort {$a->{'name'} cmp $b->{'name'}} @{$obj_list};
         $data->{$type} = $obj_list;
 
         my $outfile = $self->{'out'}.'/conf.d/'.$type.'.cfg';
