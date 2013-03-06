@@ -62,7 +62,7 @@ sub uniq {
             if($name) {
                 next unless defined $o->{$attr};
                 next unless defined $o->{$attr}->{$name};
-                for my $v (split(/\s*\|\s*|\s*,\s*/, $o->{$attr}->{$name})) {
+                for my $v (split(/\s*\|\s*|\s*,\s*/mx, $o->{$attr}->{$name})) {
                     $uniq->{$v} = 1;
                 }
             } else {

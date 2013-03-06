@@ -84,7 +84,7 @@ sub read {
         info("reading $type from $file");
 
         my $output   = "";
-        $self->{'montt'}->{'tt'}->process($file, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
+        $self->{'montt'}->tt->process($file, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
 
         for my $line (split(/\n/mx, $output)) {
             next if substr($line, 0, 1) eq '#';

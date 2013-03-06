@@ -80,12 +80,6 @@ sub run {
     }
     $self->_run_hook('pre', join(',', @{$self->{'in'}}));
 
-    # make some globals available in TT stash
-    $self->{'tt_opts'}->{'PRE_DEFINE'}->{'src'} = $self->{'in'};
-
-    $self->{'tt'} = Template->new($self->{'tt_opts'});
-    $Template::Stash::PRIVATE = undef;
-
     # die if output directory already exists
     if(-e $self->{'out'} and !$self->{'opt'}->{'force'}) {
         my @files = glob($self->{'out'}.'/*');
@@ -106,6 +100,28 @@ sub run {
     $self->_run_hook('post', join(',', @{$self->{'in'}}));
     info('done');
     return 0;
+}
+
+#####################################################################
+
+=head2 tt
+
+return template toolkit object
+
+=cut
+
+sub tt {
+    my($self) = @_;
+
+    return $self->{'_tt'} if $self->{'_tt'};
+
+    # make some globals available in TT stash
+    $self->{'tt_opts'}->{'PRE_DEFINE'}->{'src'} = $self->{'in'};
+
+    $self->{'_tt'} = Template->new($self->{'tt_opts'});
+    $Template::Stash::PRIVATE = undef;
+
+    return $self->{'_tt'};
 }
 
 #####################################################################
@@ -398,7 +414,7 @@ sub _process_template {
     trace('==========================');
 
     my $output;
-    $self->{'tt'}->process(\$template, $data, \$output) or $self->_template_process_die($template, $data);
+    $self->tt->process(\$template, $data, \$output) or $self->_template_process_die($template, $data);
 
     # clean up result
     $output =~ s/^\s*$//sgmx;
@@ -529,7 +545,7 @@ sub _get_tags_for_path {
 #####################################################################
 sub _template_process_die {
     my($self, $template, $data) = @_;
-    my $tterror = "".$self->{'tt'}->error();
+    my $tterror = "".$self->tt->error();
     my $already_printed = 0;
 
     # try to find file / line
@@ -579,6 +595,7 @@ sub _get_file_and_line_for_error {
     }
     return(undef, undef);
 }
+
 #####################################################################
 sub _mkdir_r {
     my($self, $dir) = @_;
