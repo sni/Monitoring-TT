@@ -33,6 +33,7 @@ sub new {
     my $objclass = 'Monitoring::TT::Object::'.ucfirst($type);
     my $obj      = \&{$objclass."::BUILD"};
     die("no such type: $type") unless defined &$obj;
+    $data->{'object_type'} = lc($type);
     my $current_object = &$obj($objclass, $data);
     return $current_object;
 }
@@ -87,6 +88,7 @@ returns value of this tag or empty string if not set
 sub tag {
     my( $self, $tag ) = @_;
     $tag = lc $tag;
+    $self->{'montt'}->{$self->{'object_type'}.'spossible_tags'}->{$tag} = 1;
     return $self->{'extra_tags'}->{$tag} if $self->{'extra_tags'}->{$tag};
     return $self->{'tags'}->{$tag}       if $self->{'tags'}->{$tag};
     return $self->{'conf'}->{$tag}       if $self->{'conf'}->{$tag};
@@ -111,6 +113,7 @@ sub set_tag {
 sub _has_something {
     my( $self, $type, $tag, $val ) = @_;
     $tag = lc $tag;
+    $self->{'montt'}->{$self->{'object_type'}.'spossible_'.$type}->{$tag} = 1;
     if(defined $val) {
         if(ref $self->{$type}->{$tag} eq 'ARRAY') {
             for my $a (@{$self->{$type}->{$tag}}) {

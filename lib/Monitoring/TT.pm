@@ -94,8 +94,14 @@ sub run {
     info('using contact filter: '.$self->{'opt'}->{'contactfilter'})   if $self->{'opt'}->{'contactfilter'};
     info('using host filter: '.$self->{'opt'}->{'hostfilter'})         if $self->{'opt'}->{'hostfilter'};
 
+    # reset counter
+    $self->{'possible_types'} = {};
+    $self->{'possible_tags'}  = {};
+    $self->{'possible_apps'}  = {};
+
     $self->_copy_static_files();
     $self->_build_dynamic_config();
+    $self->_check_typos() unless $self->{'opt'}->{'templatefilter'};
     $self->_print_stats() if $Monitoring::TT::Log::Verbose >= 2;
     $self->_run_hook('post', join(',', @{$self->{'in'}}));
     info('done');
@@ -240,6 +246,7 @@ sub _build_dynamic_object_config {
             for my $in (@{$self->{'in'}}) {
                 my $data = $cls->read($in, $type);
                 for my $d (@{$data}) {
+                    $d->{'montt'} = $self;
                     my $o = Monitoring::TT::Object->new($type, $d);
                     die('got no object') unless defined $o;
                     next if defined $typefilter and join(',', values %{$o}) !~ m/$typefilter/mx;
@@ -277,6 +284,8 @@ sub _build_dynamic_object_config {
             close($fh);
         }
     }
+
+    $self->{'data'} = $data;
 
     return;
 }
@@ -329,9 +338,11 @@ sub _build_template {
                     my $required_type = shift @{$tags};
                     info('adding '.$type.' template: '.$t.($required_type ? ' for type '.$required_type : '').(scalar @{$tags} > 0 ? ' with tags: '.join(' & ', @{$tags}) : ''));
                     if($required_type) {
+                        $self->{$type.'possible_types'}->{$required_type} = 1;
                         $template .= "[% IF d.type == '$required_type' %]";
                     }
                     for my $tag (@{$tags}) {
+                        $self->{$type.'possible_tags'}->{$tag} = 1;
                         $template .= "[% IF d.has_tag('$tag') %]";
                     }
                     $template .= $self->_read_replaced_template($t);
@@ -359,6 +370,7 @@ sub _build_template {
                         my $apps = $self->_get_tags_for_path($t, $path);
                         info('adding apps template: '.$t.(scalar @{$apps} > 0 ? ' for apps: '.join(' & ', @{$apps}) : ''));
                         for my $app (@{$apps}) {
+                            $self->{'possible_apps'}->{$app} = 1;
                             $template .= "[% IF d.has_app('$app') %]";
                         }
                         $template .= $self->_read_replaced_template($t);
@@ -609,6 +621,27 @@ sub _mkdir_r {
 }
 
 #####################################################################
+sub _check_typos {
+    my($self) = @_;
+    for my $type (qw/hosts contacts/) {
+        for my $o (@{$self->{'data'}->{$type}}) {
+            if($o->{'type'}) {
+                warn('unsued type \''.$o->{'type'}.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_types'}->{$o->{'type'}};
+            }
+            if($o->{'tags'}) {
+                for my $t (keys %{$o->{'tags'}}) {
+                    warn('unsued tag \''.$t.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_tags'}->{$t};
+                }
+            }
+            if($o->{'apps'}) {
+                for my $a (keys %{$o->{'apps'}}) {
+                    warn('unsued app \''.$a.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_apps'}->{$a};
+                }
+            }
+        }
+    }
+    return;
+}
 
 =head1 AUTHOR
 

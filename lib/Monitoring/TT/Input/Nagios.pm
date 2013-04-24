@@ -84,10 +84,12 @@ sub read {
         info("reading $type from $file");
 
         my $output   = "";
-        $self->{'montt'}->tt->process($file, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
+        my $template = $self->{'montt'}->_read_replaced_template($file);
+        $self->{'montt'}->tt->process(\$template, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
 
         for my $line (split(/\n/mx, $output)) {
             next if substr($line, 0, 1) eq '#';
+            next if $line =~ m/^\s*$/gmx;
             chomp($line);
             if($line =~ m/^\s*define\s+(\w+)($|\s|{)/mx) {
                 my $in_type = $1;
@@ -116,6 +118,10 @@ sub read {
                     $current->{'address'} = $current->{'conf'}->{'address'}     || '';
                     $current->{'alias'}   = $current->{'conf'}->{'alias'}       || '';
                     $current->{'groups'}  = $current->{'conf'}->{'host_groups'} || $current->{'conf'}->{'hostgroups'} || [];
+
+                    $current->{'file'} = delete $current->{'conf'}->{'_src'};
+                    $current->{'file'} =~ s/:(\d+)$//gmx;
+                    $current->{'line'} = $1;
 
                     push @{$data}, $current;
                     $current = { 'conf' => {}};

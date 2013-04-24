@@ -31,29 +31,33 @@ my $hosts_exp =  [{
                     'host_name'             => 'test-win',
                     'address'               => '127.0.0.2',
                     'contact_groups'        => 'test-contact',
-                },
+            },
+            'file'                  => 't/data/111-input_nagios/hosts-win.cfg',
+            'line'                  => '1',
           },
           {
-            'name'     => 'test-host',
-            'address'  => '127.0.0.1',
-            'alias'    => '',
-            'apps' => {
-                        'database'  => '',
-                        'webserver' => ''
+            'name'                  => 'test-host',
+            'address'               => '127.0.0.1',
+            'alias'                 => '',
+            'apps'                  => {
+                    'database'          => '',
+                    'webserver'         => ''
                       },
-            'tags' => {
-                        'debian' => '',
-                        'https'  => '',
-                        'http'   => '80',
+            'tags'                  => {
+                    'debian'            => '',
+                    'https'             => '',
+                    'http'              => '80',
                       },
-            'groups' => [],
-            'type' => 'linux',
+            'groups'                => [],
+            'type'                  => 'linux',
             'conf'                  => {
-                    'use' => 'generic-host',
-                    'host_name' => 'test-host',
-                    'address' => '127.0.0.1',
-                    'contact_groups' => 'test-contact',
-                }
+                    'use'               => 'generic-host',
+                    'host_name'         => 'test-host',
+                    'address'           => '127.0.0.1',
+                    'contact_groups'    => 'test-contact',
+            },
+            'file'                  => 't/data/111-input_nagios/hosts.cfg',
+            'line'                  => '1',
           }
         ];
 is_deeply($hosts, $hosts_exp, 'input parser') or diag(Dumper($hosts));

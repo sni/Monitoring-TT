@@ -96,6 +96,9 @@ sub read {
                 $x++;
             }
 
+            $d->{'file'} = $file;
+            $d->{'line'} = $.;
+
             # bring tags in shape
             $d->{'tags'} = Monitoring::TT::Utils::parse_tags($d->{'tags'});
 
