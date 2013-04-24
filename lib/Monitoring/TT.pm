@@ -630,6 +630,7 @@ sub _check_typos {
             }
             if($o->{'tags'}) {
                 for my $t (keys %{$o->{'tags'}}) {
+                    next if substr($t,0,1) eq '_';
                     warn('unsued tag \''.$t.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_tags'}->{$t};
                 }
             }
