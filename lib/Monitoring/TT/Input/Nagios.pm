@@ -111,13 +111,20 @@ sub read {
                     # bring apps in shape
                     $current->{'apps'} = Monitoring::TT::Utils::parse_tags(delete $current->{'conf'}->{'_apps'}) if $type eq 'hosts';
 
-                    # transfer type
-                    $current->{'type'} = delete $current->{'conf'}->{'_type'};
+                    # transfer type and some other attributes
+                    $current->{'type'}  = delete $current->{'conf'}->{'_type'};
+                    $current->{'alias'} = $current->{'conf'}->{'alias'} || '';
 
-                    $current->{'name'}    = $current->{'conf'}->{'host_name'}   || '';
-                    $current->{'address'} = $current->{'conf'}->{'address'}     || '';
-                    $current->{'alias'}   = $current->{'conf'}->{'alias'}       || '';
-                    $current->{'groups'}  = $current->{'conf'}->{'host_groups'} || $current->{'conf'}->{'hostgroups'} || [];
+                    if($type eq 'hosts') {
+                        $current->{'name'}    = $current->{'conf'}->{'host_name'}   || '';
+                        $current->{'address'} = $current->{'conf'}->{'address'}     || '';
+                        $current->{'groups'}  = $current->{'conf'}->{'host_groups'} || $current->{'conf'}->{'hostgroups'} || [];
+                    }
+                    if($type eq 'contacts') {
+                        $current->{'name'}   = $current->{'conf'}->{'contact_name'}   || '';
+                        $current->{'email'}  = $current->{'conf'}->{'email'}          || '';
+                        $current->{'groups'} = $current->{'conf'}->{'contact_groups'} || $current->{'conf'}->{'contactgroups'} || [];
+                    }
 
                     $current->{'file'} = delete $current->{'conf'}->{'_src'};
                     $current->{'file'} =~ s/:(\d+)$//gmx;
