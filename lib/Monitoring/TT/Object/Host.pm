@@ -44,6 +44,23 @@ sub has_app {
     return $self->_has_something('extra_apps', $app, $val) || $self->_has_something('apps', $app, $val);
 }
 
+
+#####################################################################
+
+=head2 app
+
+returns value of this app or empty string if not set
+
+=cut
+sub app {
+    my( $self, $app ) = @_;
+    $app = lc $app;
+    $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
+    return $self->{'extra_tags'}->{$app} if $self->{'extra_apps'}->{$app};
+    return $self->{'apps'}->{$app}       if $self->{'apps'}->{$app};
+    return "";
+}
+
 #####################################################################
 
 =head2 apps
