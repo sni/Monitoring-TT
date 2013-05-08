@@ -420,6 +420,14 @@ sub _get_files {
 sub _process_template {
     my($self, $template, $data) = @_;
 
+    for my $in (@{$self->{'in'}}) {
+        debug('looking for a '.$in.'/config.cfg');
+        if(-e $in.'/config.cfg') {
+            debug('added config template '.$in.'/config.cfg');
+            $template = $self->_read_replaced_template($in.'/config.cfg')."\n".$template;
+        }
+    }
+
     trace('template:');
     trace('==========================');
     trace($template);
@@ -507,8 +515,9 @@ sub _run_hook {
             }
             close($ph);
             my $rc  = $?>>8;
+            debug('hook returned: '.$rc);
             if($rc) {
-                debug('hook returned: '.$rc.' -> exiting');
+                debug(' -> exiting');
                 exit $rc;
             }
         }

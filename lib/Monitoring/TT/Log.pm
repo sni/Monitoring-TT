@@ -115,7 +115,7 @@ sub log {
     }
     elsif($msg =~ m/^WARNING:/mx) {
         $msg =~ s/^WARNING:\s*//gmx;
-        warning($msg);
+        &warn($msg);
     } else {
         _out($msg, 'plain');
     }
