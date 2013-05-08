@@ -50,6 +50,7 @@ t/202-contactgroups.t
 t/203-apps.t
 t/204-extra-apps.t
 t/205-extra-tags.t
+t/206-tag-value.t
 t/250-error-1.t
 t/251-error-2.t
 t/299-full.t
@@ -87,6 +88,9 @@ t/data/205-extra-tags/in/conf.d/hosts.cfg
 t/data/205-extra-tags/in/conf.d/hosts/linux.cfg
 t/data/205-extra-tags/in/hosts.csv
 t/data/205-extra-tags/out/conf.d/hosts.cfg
+t/data/206-tag-value/in/conf.d/hosts/linux.cfg
+t/data/206-tag-value/in/hosts.csv
+t/data/206-tag-value/out/conf.d/hosts.cfg
 t/data/250-error-1/in/conf.d/hosts.cfg
 t/data/250-error-1/in/hosts.csv
 t/data/250-error-1/out/conf.d/hosts.cfg
