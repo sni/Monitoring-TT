@@ -41,6 +41,8 @@ returns true if object has specific app, false otherwise.
 =cut
 sub has_app {
     my( $self, $app, $val ) = @_;
+    $app = lc $app;
+    $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
     return $self->_has_something('extra_apps', $app, $val) || $self->_has_something('apps', $app, $val);
 }
 
@@ -53,10 +55,16 @@ returns value of this app or empty string if not set
 
 =cut
 sub app {
-    my( $self, $app ) = @_;
+    my( $self, $app, $val ) = @_;
+    die('app does not accept value') if $val;
     $app = lc $app;
     $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
-    return $self->{'extra_tags'}->{$app} if $self->{'extra_apps'}->{$app};
+    if($self->{'extra_apps'}->{$app} and $self->{'apps'}->{$app}) {
+        my @list = @{$self->{'extra_apps'}->{$app}};
+        push @list, ref $self->{'apps'}->{$app} eq 'ARRAY' ? @{$self->{'apps'}->{$app}} : $self->{'apps'}->{$app};
+        return(Monitoring::TT::Utils::get_uniq_sorted(\@list));
+    }
+    return $self->{'extra_apps'}->{$app} if $self->{'extra_apps'}->{$app};
     return $self->{'apps'}->{$app}       if $self->{'apps'}->{$app};
     return "";
 }

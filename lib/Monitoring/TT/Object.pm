@@ -86,9 +86,15 @@ returns value of this tag or empty string if not set
 
 =cut
 sub tag {
-    my( $self, $tag ) = @_;
+    my( $self, $tag, $val ) = @_;
+    die('app does not accept value') if $val;
     $tag = lc $tag;
     $self->{'montt'}->{$self->{'object_type'}.'spossible_tags'}->{$tag} = 1;
+    if($self->{'extra_tags'}->{$tag} and $self->{'tags'}->{$tag}) {
+        my @list = @{$self->{'extra_tags'}->{$tag}};
+        push @list, ref $self->{'tags'}->{$tag} eq 'ARRAY' ? @{$self->{'tags'}->{$tag}} : $self->{'tags'}->{$tag};
+        return(Monitoring::TT::Utils::get_uniq_sorted(\@list));
+    }
     return $self->{'extra_tags'}->{$tag} if $self->{'extra_tags'}->{$tag};
     return $self->{'tags'}->{$tag}       if $self->{'tags'}->{$tag};
     return $self->{'conf'}->{$tag}       if $self->{'conf'}->{$tag};
