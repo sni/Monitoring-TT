@@ -3,6 +3,7 @@ package Monitoring::TT::Object;
 use strict;
 use warnings;
 use utf8;
+use Carp;
 use Monitoring::TT::Object::Contact;
 use Monitoring::TT::Object::Host;
 
@@ -87,7 +88,7 @@ returns value of this tag or empty string if not set
 =cut
 sub tag {
     my( $self, $tag, $val ) = @_;
-    die('app does not accept value') if $val;
+    croak('tag() does not accept value, use has_tag() instead') if $val;
     $tag = lc $tag;
     $self->{'montt'}->{$self->{'object_type'}.'spossible_tags'}->{$tag} = 1;
     if($self->{'extra_tags'}->{$tag} and $self->{'tags'}->{$tag}) {

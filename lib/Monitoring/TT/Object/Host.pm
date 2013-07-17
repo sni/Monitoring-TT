@@ -3,6 +3,7 @@ package Monitoring::TT::Object::Host;
 use strict;
 use warnings;
 use utf8;
+use Carp;
 use base 'Monitoring::TT::Object';
 
 #####################################################################
@@ -56,7 +57,7 @@ returns value of this app or empty string if not set
 =cut
 sub app {
     my( $self, $app, $val ) = @_;
-    die('app does not accept value') if $val;
+    croak('app() does not accept value, use has_app() instead') if $val;
     $app = lc $app;
     $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
     if($self->{'extra_apps'}->{$app} and $self->{'apps'}->{$app}) {
