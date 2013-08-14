@@ -635,17 +635,17 @@ sub _check_typos {
     for my $type (qw/hosts contacts/) {
         for my $o (@{$self->{'data'}->{$type}}) {
             if($o->{'type'}) {
-                warn('unsued type \''.$o->{'type'}.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_types'}->{$o->{'type'}};
+                warn('unused type \''.$o->{'type'}.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_types'}->{$o->{'type'}};
             }
             if($o->{'tags'}) {
                 for my $t (keys %{$o->{'tags'}}) {
                     next if substr($t,0,1) eq '_';
-                    warn('unsued tag \''.$t.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_tags'}->{$t};
+                    warn('unused tag \''.$t.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_tags'}->{$t};
                 }
             }
             if($o->{'apps'}) {
                 for my $a (keys %{$o->{'apps'}}) {
-                    warn('unsued app \''.$a.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_apps'}->{$a};
+                    warn('unused app \''.$a.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_apps'}->{$a};
                 }
             }
         }

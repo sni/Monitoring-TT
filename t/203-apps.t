@@ -11,8 +11,8 @@ use TestUtils;
 
 TestUtils::test_montt('t/data/203-apps', {
         errlike => [
-            '/unsued type \'linux\' defined in/',
-            '/unsued tag \'contact_groups\' defined/',
+            '/unused type \'linux\' defined in/',
+            '/unused tag \'contact_groups\' defined/',
         ],
     }
 );
