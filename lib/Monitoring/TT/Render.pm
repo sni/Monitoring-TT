@@ -92,8 +92,25 @@ sub uniq_list {
     return join_hash_list(@_) if defined $_[0] and ref $_[0] eq 'HASH';
     my $uniq = {};
     for my $list (@_) {
-        for my $i (@{$list}) {
-            $uniq->{$i} = 1;
+        if(ref $list eq 'HASH') {
+            for my $i (keys %{$list}) {
+                $uniq->{$i} = 1;
+            }
+        }
+        elsif(ref $list eq 'ARRAY') {
+            for my $i (@{$list}) {
+                my $tmp = uniq_list($i);
+                if(ref $tmp eq '') { $tmp = [split(/\s*,\s*/mx, $tmp)]; }
+                for my $k (@{$tmp}) {
+                    $uniq->{$k} = 1;
+                }
+            }
+        }
+        elsif(ref $list eq '') {
+            $uniq->{$list} = 1;
+        }
+        else {
+            croak('unexpected objects type in uniq_list()'.(ref $list));
         }
     }
     my @items = sort keys %{$uniq};
