@@ -94,6 +94,8 @@ sub uniq_list {
     for my $list (@_) {
         if(ref $list eq 'HASH') {
             for my $i (keys %{$list}) {
+                $i =~ s/^\s+//mx;
+                $i =~ s/\s+$//mx;
                 $uniq->{$i} = 1;
             }
         }
@@ -102,11 +104,15 @@ sub uniq_list {
                 my $tmp = uniq_list($i);
                 if(ref $tmp eq '') { $tmp = [split(/\s*,\s*/mx, $tmp)]; }
                 for my $k (@{$tmp}) {
+                    $k =~ s/^\s+//mx;
+                    $k =~ s/\s+$//mx;
                     $uniq->{$k} = 1;
                 }
             }
         }
         elsif(ref $list eq '') {
+            $list =~ s/^\s+//mx;
+            $list =~ s/\s+$//mx;
             $uniq->{$list} = 1;
         }
         else {
