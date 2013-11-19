@@ -84,7 +84,7 @@ sub read {
         info("reading $type from $file");
 
         my $output   = "";
-        my $template = $self->{'montt'}->_read_replaced_template($file);
+        my $template = $self->{'montt'}->_process_template($self->{'montt'}->_read_replaced_template($file));
         $self->{'montt'}->tt->process(\$template, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
 
         for my $line (split(/\n/mx, $output)) {
