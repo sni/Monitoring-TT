@@ -107,7 +107,7 @@ sub log {
     my($msg) = @_;
     if(ref $msg) {
         info($msg);
-        return;
+        return "";
     }
     if($msg =~ m/^ERROR:/mx) {
         $msg =~ s/^ERROR:\s*//gmx;
@@ -125,7 +125,7 @@ sub log {
 #####################################################################
 sub _out {
     my($data, $lvl, $time) = @_;
-    return unless defined $data;
+    return "" unless defined $data;
     $time = $time || (scalar localtime());
     if(ref $data) {
         return _out(Dumper($data), $lvl, $time);
@@ -142,7 +142,7 @@ sub _out {
             print STDOUT $txt;
         }
     }
-    return;
+    return "";
 }
 
 #####################################################################
