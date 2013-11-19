@@ -51,6 +51,7 @@ t/203-apps.t
 t/204-extra-apps.t
 t/205-extra-tags.t
 t/206-extra-tags-append.t
+t/206-extra-tags-dup.t
 t/206-tag-value.t
 t/207-app-value.t
 t/250-error-1.t
@@ -95,6 +96,11 @@ t/data/206-extra-tags-append/in/conf.d/hosts.cfg
 t/data/206-extra-tags-append/in/conf.d/hosts/linux.cfg
 t/data/206-extra-tags-append/in/hosts.csv
 t/data/206-extra-tags-append/out/conf.d/hosts.cfg
+t/data/206-extra-tags-dup/in/conf.d/apps.cfg
+t/data/206-extra-tags-dup/in/conf.d/hosts.cfg
+t/data/206-extra-tags-dup/in/conf.d/hosts/linux.cfg
+t/data/206-extra-tags-dup/in/hosts.csv
+t/data/206-extra-tags-dup/out/conf.d/hosts.cfg
 t/data/206-tag-value/in/conf.d/hosts/linux.cfg
 t/data/206-tag-value/in/hosts.csv
 t/data/206-tag-value/out/conf.d/hosts.cfg
