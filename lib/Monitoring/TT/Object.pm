@@ -50,7 +50,8 @@ returns true if object has specific tag, false otherwise.
 =cut
 sub has_tag {
     my( $self, $tag, $val ) = @_;
-    return $self->_has_something('conf', $tag, $val) || $self->_has_something('extra_tags', $tag, $val) || $self->_has_something('tags', $tag, $val);
+    $self->{'montt'}->{$self->{'object_type'}.'spossible_tags'}->{$tag} = 1;
+    return &_has_something($self, 'conf', $tag, $val) || &_has_something($self, 'extra_tags', $tag, $val) || &_has_something($self, 'tags', $tag, $val);
 }
 
 #####################################################################
@@ -119,15 +120,18 @@ sub set_tag {
 #####################################################################
 sub _has_something {
     my( $self, $type, $tag, $val ) = @_;
+    return 0 unless exists $self->{$type};
     $tag = lc $tag;
-    $self->{'montt'}->{$self->{'object_type'}.'spossible_'.$type}->{$tag} = 1;
+    return 0 unless exists $self->{$type}->{$tag};
     if(defined $val) {
-        if(ref $self->{$type}->{$tag} eq 'ARRAY') {
-            for my $a (@{$self->{$type}->{$tag}}) {
-                return 1 if lc($a) eq lc($val);
+        $val = lc $val;
+        my $tags = $self->{$type}->{$tag};
+        if(ref $tags eq 'ARRAY') {
+            for my $a (@{$tags}) {
+                return 1 if lc($a) eq $val;
             }
         } else {
-            return 1 if defined $self->{$type}->{$tag} and lc($self->{$type}->{$tag}) eq lc($val);
+            return 1 if lc($tags) eq $val;
         }
     } else {
         return 1 if exists $self->{$type}->{$tag};

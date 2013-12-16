@@ -42,7 +42,6 @@ returns true if object has specific app, false otherwise.
 =cut
 sub has_app {
     my( $self, $app, $val ) = @_;
-    $app = lc $app;
     $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
     return $self->_has_something('extra_apps', $app, $val) || $self->_has_something('apps', $app, $val);
 }

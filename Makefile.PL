@@ -12,7 +12,8 @@ resources(
     'repository', => 'https://github.com/sni/Monitoring-TT',
 );
 
-requires 'Template'  => 0;
+requires 'Pod::Usage' => 0;
+requires 'Template'   => 0;
 
 # requirements test requirements
 feature     ('author_test',
