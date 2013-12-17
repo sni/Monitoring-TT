@@ -241,7 +241,7 @@ sub _build_dynamic_object_config {
     for my $type (keys %{$input_types}) {
         my $typefilter = $self->{'opt'}->{substr($type,0,-1).'filter'};
         my $obj_list = [];
-        trace('fetching data for '.$type);
+        trace('fetching data for '.$type) if $Monitoring::TT::Log::Verbose >= 4;
         for my $cls (@{$input_types->{$type}}) {
             for my $in (@{$self->{'in'}}) {
                 my $data = $cls->read($in, $type);
@@ -329,7 +329,7 @@ sub _build_template {
         for my $path (glob($in.'/'.$dir.'/'.$type.'/ '.
                            $in.'/'.$dir.'/'.$type.'*.cfg')
         ) {
-            trace('looking for '.$type.' templates in '.$path);
+            trace('looking for '.$type.' templates in '.$path) if $Monitoring::TT::Log::Verbose >= 4;
             if(-e $path) {
                 my $templates = $self->_get_files($path, '\.cfg');
                 for my $t (reverse sort @{$templates}) {
@@ -362,7 +362,7 @@ sub _build_template {
         for my $in (@{$self->{'in'}}) {
             for my $path (@{$appdirs}) {
                 $path = $in.'/'.$path;
-                trace('looking for '.$type.' apps in '.$path);
+                trace('looking for '.$type.' apps in '.$path) if $Monitoring::TT::Log::Verbose >= 4;
                 if(-e $path) {
                     my $templates = $self->_get_files($path, '\.cfg');
                     for my $t (reverse sort @{$templates}) {
@@ -390,8 +390,10 @@ sub _build_template {
         return '';
     }
     $template .= "[% END %]\n";
-    trace('created template:');
-    trace($template);
+    if($Monitoring::TT::Log::Verbose >= 4) {
+        trace('created template:');
+        trace($template);
+    }
     return $template;
 }
 
@@ -428,10 +430,12 @@ sub _process_template {
         }
     }
 
-    trace('template:');
-    trace('==========================');
-    trace($template);
-    trace('==========================');
+    if($Monitoring::TT::Log::Verbose >= 4) {
+        trace('template:');
+        trace('==========================');
+        trace($template);
+        trace('==========================');
+    }
 
     my $output;
     $self->tt->process(\$template, $data, \$output) or $self->_template_process_die($template, $data);
@@ -451,11 +455,13 @@ sub _get_input_classes {
     for my $dir (@{$folders}) {
         next unless -d $dir.'/lib/.';
         unshift @INC, "$dir/lib";
-        trace('added '.$dir.'/lib to @INC');
+        trace('added '.$dir.'/lib to @INC') if $Monitoring::TT::Log::Verbose >= 4;
     }
 
-    trace('@INC:');
-    trace(\@INC);
+    if($Monitoring::TT::Log::Verbose >= 4) {
+        trace('@INC:');
+        trace(\@INC);
+    }
 
     my $uniq_types = {};
     my $uniq_libs  = {};
@@ -464,7 +470,7 @@ sub _get_input_classes {
         $uniq_libs->{$inc} = 1;
         my @files = glob($inc.'/Monitoring/TT/Input/*.pm');
         for my $file (glob($inc.'/Monitoring/TT/Input/*.pm')) {
-            trace('found input class: '.$file);
+            trace('found input class: '.$file) if $Monitoring::TT::Log::Verbose >= 4;
             $file =~ s|^$inc/Monitoring/TT/Input/||mx;
             $file =~ s|\.pm$||mx;
             push @{$types}, $file unless defined $uniq_types->{$types}->{$file};
@@ -489,7 +495,7 @@ sub _get_input_types {
         my $obj      = \&{$objclass."::new"};
         my $it       = &$obj($objclass, montt => $self);
         my $types    = $it->get_types($folders);
-        trace('input \''.$t.'\' supports: '.join(', ', @{$types}));
+        trace('input \''.$t.'\' supports: '.join(', ', @{$types})) if $Monitoring::TT::Log::Verbose >= 4;
         for my $type (@{$types}) {
             $input_types->{$type} = [] unless defined $input_types->{$type};
             push @{$input_types->{$type}}, $it;
@@ -504,7 +510,7 @@ sub _run_hook {
     return if $self->{'opt'}->{'dryrun'};
     for my $in (@{$self->{'in'}}) {
         my $hook = $in.'/hooks/'.$name;
-        trace("hook: looking for ".$hook);
+        trace("hook: looking for ".$hook) if $Monitoring::TT::Log::Verbose >= 4;
         if(-x $hook) {
             my $cmd = $hook;
             $cmd = $cmd." ".$args if defined $args;
@@ -601,7 +607,7 @@ sub _template_process_die {
     error($tterror) unless $already_printed;
     debug('in template:');
     debug($template);
-    trace($data);
+    trace($data) if $Monitoring::TT::Log::Verbose >= 4;
     exit 1;
 }
 
