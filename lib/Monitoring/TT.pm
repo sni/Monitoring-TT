@@ -223,17 +223,17 @@ sub _build_dynamic_config {
 sub _build_dynamic_object_config {
     my($self) = @_;
 
-    # build templates
-    my $templates = {
-        contacts => $self->_build_template('conf.d', 'contacts'),
-        hosts    => $self->_build_template('conf.d', 'hosts', [ 'conf.d/apps', 'conf.d/apps.cfg' ]),
-    };
-
     # detect input type
     my $input_types = $self->_get_input_types($self->{'in'});
 
     # no dynamic config at all?
     return unless scalar keys %{$input_types} > 0;
+
+    # build templates
+    my $templates = {
+        contacts => $self->_build_template('conf.d', 'contacts'),
+        hosts    => $self->_build_template('conf.d', 'hosts', [ 'conf.d/apps', 'conf.d/apps.cfg' ]),
+    };
 
     mkdir($self->{'out'}.'/conf.d');
 
@@ -538,7 +538,7 @@ sub _run_hook {
 #####################################################################
 sub _read_replaced_template {
     my($self, $template) = @_;
-    $template =~ s|//|/|gmx;
+    $template =~ s|//|/|gmxo;
     my $text = '[%# SRC '.$template.':1 #%]';
     open(my $fh, '<', $template) or die("cannot read: ".$template.': '.$!);
     while(my $line = <$fh>) {
@@ -552,9 +552,9 @@ sub _read_replaced_template {
         $text .= $line;
         if($line =~ m/^define\s+(\w+)/mxo) {
             if($1 eq 'service' or $1 eq 'host' or $1 eq 'contact') {
-                $text .= "  _SRC ".$template.':'.$.."\n";
+                $text .= '  _SRC '.$template.':'.$.."\n";
             } else {
-                $text .= "# SRC ".$template.':'.$.."\n";
+                $text .= '# SRC '.$template.':'.$.."\n";
             }
         }
     }
