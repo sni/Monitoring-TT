@@ -422,13 +422,17 @@ sub _get_files {
 sub _process_template {
     my($self, $template, $data) = @_;
 
-    for my $in (@{$self->{'in'}}) {
-        debug('looking for a '.$in.'/config.cfg');
-        if(-e $in.'/config.cfg') {
-            debug('added config template '.$in.'/config.cfg');
-            $template = $self->_read_replaced_template($in.'/config.cfg')."\n".$template;
+    if(!defined $self->{'_config_template'}) {
+        $self->{'_config_template'} = "";
+        for my $in (@{$self->{'in'}}) {
+            debug('looking for a '.$in.'/config.cfg');
+            if(-e $in.'/config.cfg') {
+                debug('added config template '.$in.'/config.cfg');
+                $self->{'_config_template'} .= $self->_read_replaced_template($in.'/config.cfg')."\n";
+            }
         }
     }
+    $template = $self->{'_config_template'}.$template;
 
     if($Monitoring::TT::Log::Verbose >= 4) {
         trace('template:');
@@ -441,8 +445,8 @@ sub _process_template {
     $self->tt->process(\$template, $data, \$output) or $self->_template_process_die($template, $data);
 
     # clean up result
-    $output =~ s/^\s*$//sgmx;
-    $output =~ s/^\n//gmx;
+    $output =~ s/^\s*$//sgmxo;
+    $output =~ s/^\n//gmxo;
 
     return $output;
 }

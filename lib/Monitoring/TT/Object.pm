@@ -36,6 +36,8 @@ sub new {
     die("no such type: $type") unless defined &$obj;
     $data->{'object_type'} = lc($type);
     my $current_object = &$obj($objclass, $data);
+    $current_object->{'montt'}->{$type.'spossible_tags'} = {} unless defined $current_object->{'montt'}->{$type.'spossible_tags'};
+    $current_object->{'possibletags'} = $current_object->{'montt'}->{$type.'spossible_tags'};
     return $current_object;
 }
 
@@ -50,7 +52,8 @@ returns true if object has specific tag, false otherwise.
 =cut
 sub has_tag {
     my( $self, $tag, $val ) = @_;
-    $self->{'montt'}->{$self->{'object_type'}.'spossible_tags'}->{$tag} = 1;
+    $tag = lc($tag);
+    $self->{'possibletags'}->{$tag} = 1;
     return &_has_something($self, 'conf', $tag, $val) || &_has_something($self, 'extra_tags', $tag, $val) || &_has_something($self, 'tags', $tag, $val);
 }
 

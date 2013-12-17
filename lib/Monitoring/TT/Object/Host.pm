@@ -42,8 +42,8 @@ returns true if object has specific app, false otherwise.
 =cut
 sub has_app {
     my( $self, $app, $val ) = @_;
-    $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
-    return $self->_has_something('extra_apps', $app, $val) || $self->_has_something('apps', $app, $val);
+    $self->{'montt'}->{'hostspossible_apps'}->{$app} = 1;
+    return &Monitoring::TT::Object::_has_something($self, 'extra_apps', $app, $val) || &Monitoring::TT::Object::_has_something($self, 'apps', $app, $val);
 }
 
 
@@ -58,7 +58,7 @@ sub app {
     my( $self, $app, $val ) = @_;
     croak('app() does not accept value, use has_app() instead') if $val;
     $app = lc $app;
-    $self->{'montt'}->{$self->{'object_type'}.'spossible_apps'}->{$app} = 1;
+    $self->{'montt'}->{'hostspossible_apps'}->{$app} = 1;
     if($self->{'extra_apps'}->{$app} and $self->{'apps'}->{$app}) {
         my @list = @{$self->{'extra_apps'}->{$app}};
         push @list, ref $self->{'apps'}->{$app} eq 'ARRAY' ? @{$self->{'apps'}->{$app}} : $self->{'apps'}->{$app};
