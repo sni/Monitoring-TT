@@ -26,8 +26,6 @@ Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
 META.yml
-MYMETA.json
-MYMETA.yml
 README
 README.asciidoc
 t/091-clean_debug.t
