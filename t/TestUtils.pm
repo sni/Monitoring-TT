@@ -104,9 +104,9 @@ sub test_montt {
     ok(($tempdir and -d $tempdir), "created tempdir: ".$tempdir);
 
     $options = {} unless defined $options;
-    $options->{'cmd'} = $BIN.' -v '.$dir.'/in '.$tempdir   unless defined $options->{'cmd'};
-    $options->{'like'} = [ '/\[INFO\]\ done/' ]         unless defined $options->{'like'};
-    $options->{'unlike'} = [ '/ARRAY/', '/HASH/' ]      unless defined $options->{'unlike'};
+    $options->{'cmd'} = $^X." ".$BIN.' -v '.$dir.'/in '.$tempdir    unless defined $options->{'cmd'};
+    $options->{'like'} = [ '/\[INFO\]\ done/' ]                     unless defined $options->{'like'};
+    $options->{'unlike'} = [ '/ARRAY/', '/HASH/' ]                  unless defined $options->{'unlike'};
 
     # create config
     my $rc = TestUtils::test_command($options);
