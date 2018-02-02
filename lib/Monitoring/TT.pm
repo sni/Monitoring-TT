@@ -53,6 +53,7 @@ sub new {
     for my $s (@{Monitoring::TT::Identifier::functions('Monitoring::TT::Render')}) {
         $self->{'tt_opts'}->{'PRE_DEFINE'}->{$s} = \&{'Monitoring::TT::Render::'.$s};
     }
+    $Monitoring::TT::Render::tt = $self;
 
     return $self;
 }
@@ -237,7 +238,7 @@ sub _build_dynamic_object_config {
 
     mkdir($self->{'out'}.'/conf.d');
 
-    my $data = { hosts => [], contacts => []};
+    $self->{'data'} = { hosts => [], contacts => [] };
     for my $type (keys %{$input_types}) {
         my $typefilter = $self->{'opt'}->{substr($type,0,-1).'filter'};
         my $obj_list = [];
@@ -257,7 +258,7 @@ sub _build_dynamic_object_config {
         }
         # sort objects by name
         @{$obj_list} = sort {$a->{'name'} cmp $b->{'name'}} @{$obj_list};
-        $data->{$type} = $obj_list;
+        $self->{'data'}->{$type} = $obj_list;
 
         my $outfile = $self->{'out'}.'/conf.d/'.$type.'.cfg';
         info('writing: '.$outfile);
@@ -279,13 +280,11 @@ sub _build_dynamic_object_config {
             $outfile    = $self->{'out'}.'/conf.d/'.$outfile;
             debug('writing: '.$outfile);
             open(my $fh, '>', $outfile) or die('cannot write '.$outfile.': '.$!);
-            print $fh $self->_process_template($self->_read_replaced_template($file), $data);
+            print $fh $self->_process_template($self->_read_replaced_template($file), $self->{'data'});
             print $fh "\n";
             close($fh);
         }
     }
-
-    $self->{'data'} = $data;
 
     return;
 }
