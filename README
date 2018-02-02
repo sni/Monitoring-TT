@@ -1,7 +1,7 @@
 == MonTT - Generate Monitoring Config with Template Toolkit
 
-Did you ever want to write sophisticated Nagios config files using
-the power of template toolkit?
+Did you ever want to write sophisticated Nagios/Naemon config files using
+the power of template toolkit? Basically this is a config preprocesseor.
 
 
 === Requirements
@@ -9,7 +9,7 @@ the power of template toolkit?
 You will need
 
   - Perl
-    - 'Template' module from CPAN
+  - 'Template' module from CPAN
 
 
 === Getting Started
