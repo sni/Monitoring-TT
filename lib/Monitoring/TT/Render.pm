@@ -234,6 +234,19 @@ sub join_hash_list {
 }
 
 #####################################################################
+
+=head2 lower
+
+    lower(str)
+
+    returns lower case string
+
+=cut
+sub lower {
+    return lc($_[0]);
+}
+
+#####################################################################
 sub _list {
     my($data) = @_;
     return([]) unless defined $data;
