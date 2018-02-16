@@ -133,8 +133,9 @@ sub read {
                     $current->{'type'} = $in_type unless $current->{'type'};
 
                     $current->{'file'} = delete $current->{'conf'}->{'_src'};
+                    $current->{'file'} = $file unless $current->{'file'};
                     $current->{'file'} =~ s/:(\d+)$//gmx;
-                    $current->{'line'} = $1;
+                    $current->{'line'} = defined $1 ? $1 : $.;
 
                     push @{$data}, $current;
                     $current = { 'conf' => {}};
