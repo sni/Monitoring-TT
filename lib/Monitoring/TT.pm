@@ -643,7 +643,7 @@ sub _check_typos {
     my($self) = @_;
     for my $type (qw/hosts contacts/) {
         for my $o (@{$self->{'data'}->{$type}}) {
-            if($o->{'type'}) {
+            if($o->{'type'} and $o->{'type'} ne 'contact') {
                 warn('unused type \''.$o->{'type'}.'\' defined in '.$o->{'file'}.':'.$o->{'line'}) unless defined $self->{$type.'possible_types'}->{$o->{'type'}};
             }
             if($o->{'tags'}) {
