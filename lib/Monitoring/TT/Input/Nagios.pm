@@ -84,8 +84,16 @@ sub read {
         info("reading $type from $file");
 
         my $output   = "";
-        my $template = $self->{'montt'}->_process_template($self->{'montt'}->_read_replaced_template($file));
-        $self->{'montt'}->tt->process(\$template, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
+        if($self->{'montt'}) {
+            my $template = $self->{'montt'}->_process_template($self->{'montt'}->_read_replaced_template($file));
+            $self->{'montt'}->tt->process(\$template, {}, \$output) or $self->{'montt'}->_template_process_die($file, $data);
+        } else {
+            open(my $fh, '<', $file) or die("cannot read: ".$file.': '.$!);
+            while(my $line = <$fh>) {
+                $output .= $line;
+            }
+            close($fh);
+        }
 
         my $in_type;
         for my $line (split(/\n/mx, $output)) {

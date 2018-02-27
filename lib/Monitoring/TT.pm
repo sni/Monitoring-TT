@@ -103,6 +103,7 @@ sub run {
     $self->_copy_static_files();
     $self->_build_dynamic_config();
     $self->_check_typos() unless $self->{'opt'}->{'templatefilter'};
+    $self->_post_process();
     $self->_print_stats() if $Monitoring::TT::Log::Verbose >= 2;
     $self->_run_hook('post', join(',', @{$self->{'in'}}));
     info('done');
@@ -448,6 +449,27 @@ sub _process_template {
     $output =~ s/^\n//gmxo;
 
     return $output;
+}
+
+#####################################################################
+sub _post_process {
+    my($self) = @_;
+    my $out = $self->{'out'};
+    for my $in (@{$self->{'in'}}) {
+        for my $processor (sort glob($in.'/post_process*')) {
+            info('postprocessing with '.$processor);
+            if(!-x $processor) {
+                error("post processor ".$processor." must be executable");
+                next;
+            }
+            my $res = `$processor $out`;
+            my $rc = $?;
+            if($rc != 0) {
+                warn($res);
+            }
+        }
+    }
+    return;
 }
 
 #####################################################################

@@ -1,5 +1,8 @@
 This file documents the revision history for the Monitoring-TT Generator
 
+next:
+          - add optional post processing scripts
+
 1.0.1    Tue Sep 27 21:58:14 CEST 2016
           - fix test when using non-system-perl
 
