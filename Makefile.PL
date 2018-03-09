@@ -12,6 +12,8 @@ resources(
     'repository', => 'https://github.com/sni/Monitoring-TT',
 );
 
+install_script 'bin/montt';
+
 requires 'Pod::Usage' => 0;
 requires 'Template'   => 0;
 
