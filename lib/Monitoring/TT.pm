@@ -12,7 +12,7 @@ use Monitoring::TT::Object;
 use Monitoring::TT::Render;
 use Monitoring::TT::Utils;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 #####################################################################
 
