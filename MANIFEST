@@ -22,7 +22,6 @@ lib/Monitoring/TT/Object/Contact.pm
 lib/Monitoring/TT/Object/Host.pm
 lib/Monitoring/TT/Render.pm
 lib/Monitoring/TT/Utils.pm
-Makefile
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
