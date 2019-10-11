@@ -5,7 +5,7 @@ use inc::Module::Install;
 name 'Monitoring-TT';
 all_from 'lib/Monitoring/TT.pm';
 
-license 'gpl3';
+license 'gpl_3';
 resources(
     'homepage',   => 'http://labs.consol.de',
     'bugtracker'  => 'https://github.com/sni/Monitoring-TT/issues',
